@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Project2_INFO5101
 {
-    public class CSVFile
+    public static class CSVFile
     {
 
-        public List<KeyValuePair<int,string>> expressions = new List<KeyValuePair<int,string>>();
-        public void CSVDeserialize(string path)
+        public static List<KeyValuePair<int,string>> expressions = new List<KeyValuePair<int,string>>();
+        public static List<KeyValuePair<int,string>> CSVDeserialize(string path)
         {
             StreamReader reader = new StreamReader(path);
             reader.ReadLine();
@@ -22,6 +22,7 @@ namespace Project2_INFO5101
                 int.TryParse(values[0], out int sno);
                 expressions.Add(new KeyValuePair<int, string>(sno, values[1]));
             }
+            return expressions;
         }//End of CSVDeserialize
 
 

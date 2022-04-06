@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project2_INFO5101
 {
-    class ExpressEvaluation
+    public class ExpressEvaluation
     {
     }
 }

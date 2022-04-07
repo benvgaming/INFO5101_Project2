@@ -34,6 +34,15 @@ namespace Project2_INFO5101
             Prefix = ExpressEvaluation.InfixToPrefix.ConvertPrefix(Infix);
             foreach (var e in Prefix)
                 Console.WriteLine($"{e.Key} - {e.Value}");
+
+            //Testing write xml
+            XMLExtension xml = new XMLExtension();
+            xml.WriteStartDocument();
+            xml.WriteStartRootElement();
+            xml.WriteStartElement("element1");
+            xml.WriteAttribute("attribute1");
+            xml.WriteEndElement();
+            xml.WriteEndRootElement();
         }
     }
 }

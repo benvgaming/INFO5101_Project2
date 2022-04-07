@@ -5,6 +5,8 @@ namespace Project2_INFO5101
     public class XMLExtension
     {
         XmlWriter writer;
+
+        const string PATH_XML = ".\\..\\..\\..\\..\\Data\\Summary.xml";
         public XMLExtension()
         {
 
@@ -14,7 +16,7 @@ namespace Project2_INFO5101
                IndentChars = "\t",
                NewLineOnAttributes = true
            };
-           writer = XmlWriter.Create("test.xml", xmlWriterSettings);
+           writer = XmlWriter.Create(PATH_XML, xmlWriterSettings);
         }
 
         public void WriteStartDocument()

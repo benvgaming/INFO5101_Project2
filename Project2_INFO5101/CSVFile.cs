@@ -9,7 +9,6 @@ namespace Project2_INFO5101
 {
     public static class CSVFile
     {
-
         public static List<KeyValuePair<int,string>> expressions = new List<KeyValuePair<int,string>>();
         public static List<KeyValuePair<int,string>> CSVDeserialize(string path)
         {
@@ -24,8 +23,6 @@ namespace Project2_INFO5101
             }
             return expressions;
         }//End of CSVDeserialize
-
-
     }//End of Class
 }//End of Namespace
 

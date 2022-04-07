@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace Project2_INFO5101
 {
-    class CompareExpressions : IComparer
+    public class CompareExpressions : IComparer
     {
+        public int Compare(object x, object y)
+        {
+            return x.Equals(y) ? 1 : 0;
+        }
     }
 }

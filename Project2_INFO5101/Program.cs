@@ -15,7 +15,8 @@ namespace Project2_INFO5101
             List<KeyValuePair<int, string>> Infix = new List<KeyValuePair<int, string>>();
             List<KeyValuePair<int, string>> Postfix = new List<KeyValuePair<int, string>>();
             List<KeyValuePair<int, string>> Prefix = new List<KeyValuePair<int, string>>();
-
+            List<KeyValuePair<int, string>> PostfixEvaluated = new List<KeyValuePair<int, string>>();
+            List<KeyValuePair<int, string>> PrefixEvaluated = new List<KeyValuePair<int, string>>();
             Infix = CSVFile.CSVDeserialize(PATH_CSV);
             Console.WriteLine("infix: ");
             foreach(var e in Infix)
@@ -24,24 +25,59 @@ namespace Project2_INFO5101
             }
             
             Console.WriteLine("postfix: ");
-            Postfix = ExpressEvaluation.InfixToPostfix.ConvertPostfix(Infix);
+            Postfix = InfixToPostfix.ConvertPostfix(Infix);
             foreach(var e in Postfix)
             {
                 Console.WriteLine($"{e.Key} - {e.Value}");
             }
 
             Console.WriteLine("prefix: ");
-            Prefix = ExpressEvaluation.InfixToPrefix.ConvertPrefix(Infix);
+            Prefix = InfixToPrefix.ConvertPrefix(Infix);
             foreach (var e in Prefix)
                 Console.WriteLine($"{e.Key} - {e.Value}");
 
+            //Testing evaluation
+            PostfixEvaluated = ExpressEvaluation.EvaluatePostfix(Postfix);
+            foreach (var e in PostfixEvaluated)
+                Console.WriteLine($"{e.Key} - {e.Value}");
+
+            PrefixEvaluated = ExpressEvaluation.EvaluatePrefix(Prefix);
+            foreach (var e in PrefixEvaluated)
+                Console.WriteLine($"{e.Key} - {e.Value}");
+
+            //Testing comparer
+            CompareExpressions comparer = new CompareExpressions();
+            foreach(var e in PostfixEvaluated)
+                Console.WriteLine($"{(comparer.Compare(e, PrefixEvaluated[e.Key - 1]) == 1 ? "true" : "false")}" );
             //Testing write xml
             XMLExtension xml = new XMLExtension();
+
             xml.WriteStartDocument();
             xml.WriteStartRootElement();
-            xml.WriteStartElement("element1");
-            xml.WriteAttribute("attribute1");
-            xml.WriteEndElement();
+            foreach(var e in Infix)
+            {
+                xml.WriteStartElement("element");
+                xml.WriteStartElement("sno");
+                xml.WriteAttribute(e.Key.ToString());
+                xml.WriteEndElement();
+                xml.WriteStartElement("infix");
+                xml.WriteAttribute(e.Value);
+                xml.WriteEndElement();
+
+                xml.WriteStartElement("prefix");
+                xml.WriteAttribute(Prefix[e.Key -1].Value);
+                xml.WriteEndElement();
+                xml.WriteStartElement("postfix");
+                xml.WriteAttribute(Postfix[e.Key -1].Value);
+                xml.WriteEndElement();
+                xml.WriteStartElement("evaluation");
+                xml.WriteAttribute(PrefixEvaluated[e.Key -1].Value);
+                xml.WriteEndElement();
+                xml.WriteStartElement("comparison");
+                xml.WriteAttribute(comparer.Compare(PrefixEvaluated[e.Key - 1], PostfixEvaluated[e.Key - 1]) == 1 ? "true" : "false");
+                xml.WriteEndElement();
+                xml.WriteEndElement();
+            }
             xml.WriteEndRootElement();
         }
     }

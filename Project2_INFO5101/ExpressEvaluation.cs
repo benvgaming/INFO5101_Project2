@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Project2_INFO5101
 {
     public static class ExpressEvaluation
     {
-
         public static List<KeyValuePair<int, string>> Postfix = new List<KeyValuePair<int, string>>();
         public static List<KeyValuePair<int, string>> Prefix = new List<KeyValuePair<int, string>>();
         //Helper methods
@@ -27,187 +25,99 @@ namespace Project2_INFO5101
             return false;
         }
 
-        static bool isOperator(char c)
+        public static List<KeyValuePair<int, string>> EvaluatePostfix(List<KeyValuePair<int, string>> postfix)
         {
-            return (!isalpha(c) && !isdigit(c));
-        }
-
-        static int getPriority(char C)
-        {
-            if (C == '-' || C == '+')
-                return 1;
-            else if (C == '*' || C == '/')
-                return 2;
-            else if (C == '^')
-                return 3;
-
-            return 0;
-        }
-
-        // Reverse the letters of the word
-        static string reverse(char[] str, int start, int end)
-        {
-            // Temporary variable to store character
-            char temp;
-            while (start < end)
+            List<KeyValuePair<int, string>> PostfixEvaluated = new List<KeyValuePair<int, string>>();
+            foreach (KeyValuePair<int, string> exp in postfix)
             {
-                // Swapping the first and last character
-                temp = str[start];
-                str[start] = str[end];
-                str[end] = temp;
-                start++;
-                end--;
-            }
-            return string.Join("", str);
-        }
-        static string infixToPostfix(char[] infix1)
-        {
-            string infix = '(' + string.Join("", infix1) + ')';
-
-            int l = infix.Length;
-            Stack<char> char_stack = new Stack<char>();
-            string output = "";
-
-            for (int i = 0; i < l; i++)
-            {
-
-                // If the scanned character is an
-                // operand, add it to output.
-                if (isalpha(infix[i]) || isdigit(infix[i]))
-                    output += infix[i];
-
-                // If the scanned character is an
-                // ‘(‘, push it to the stack.
-                else if (infix[i] == '(')
-                    char_stack.Push('(');
-
-                // If the scanned character is an
-                // ‘)’, pop and output from the stack
-                // until an ‘(‘ is encountered.
-                else if (infix[i] == ')')
+                Stack<double> operand = new Stack<double>();
+                char[] e = exp.Value.ToCharArray();
+                double result = 0;
+                for (int i = 0; i < e.Length; i++)
                 {
-                    while (char_stack.Peek() != '(')
+                    result = 0;
+                    if (isalpha(e[i]) || isdigit(e[i]))
                     {
-                        output += char_stack.Peek();
-                        char_stack.Pop();
+                        operand.Push(char.GetNumericValue(e[i]));
                     }
-
-                    // Remove '(' from the stack
-                    char_stack.Pop();
+                    else
+                    {
+                        double op2 = operand.Peek();
+                        operand.Pop();
+                        double op1 = operand.Peek();
+                        operand.Pop();
+                        if (e[i] == '/')
+                        {
+                            result = op1 / op2;
+                        }
+                        else if (e[i] == '*')
+                        {
+                            result = op1 * op2;
+                        }
+                        else if (e[i] == '+')
+                        {
+                            result = op1 + op2;
+                        }
+                        else if (e[i] == '-')
+                        {
+                            result = op1 - op2;
+                        }
+                        operand.Push(result);
+                    }
                 }
+                PostfixEvaluated.Add(new KeyValuePair<int, string>(exp.Key, operand.Peek().ToString()));
+            }
+            return PostfixEvaluated;
+        }//End of EvaluatePostfix
+        public static List<KeyValuePair<int, string>> EvaluatePrefix(List<KeyValuePair<int, string>> prefix)
+        {
+            List<KeyValuePair<int, string>> PrefixEvaluated = new List<KeyValuePair<int, string>>();
+            foreach (KeyValuePair<int, string> exp in prefix)
+            {
+            Stack<double> Stack = new Stack<double>();
+                string exprsn = exp.Value;
+            for (int j = exprsn.Length - 1; j >= 0; j--)
+            {
 
-                // Operator found
+                // Push operand to Stack
+                // To convert exprsn[j] to digit subtract
+                // '0' from exprsn[j].
+                if (isalpha(exprsn[j]) || isdigit(exprsn[j]))
+                    Stack.Push((double)(exprsn[j] - 48));
+
                 else
                 {
-                    if (isOperator(infix[i]))
-                    {
-                        while ((char_stack.Count != 0) &&
-                                 (getPriority(infix[i]) <= getPriority(char_stack.Peek()))
-                                   )
-                        {
-                            output += char_stack.Peek();
-                            char_stack.Pop();
-                        }
 
-                        // Push current Operator on stack
-                        char_stack.Push(infix[i]);
+                    // Operator encountered
+                    // Pop two elements from Stack
+                    double o1 = Stack.Peek();
+                    Stack.Pop();
+                    double o2 = Stack.Peek();
+                    Stack.Pop();
+
+                    // Use switch case to operate on o1
+                    // and o2 and perform o1 O o2.
+                    switch (exprsn[j])
+                    {
+                        case '+':
+                            Stack.Push(o1 + o2);
+                            break;
+                        case '-':
+                            Stack.Push(o1 - o2);
+                            break;
+                        case '*':
+                            Stack.Push(o1 * o2);
+                            break;
+                        case '/':
+                            Stack.Push(o1 / o2);
+                            break;
                     }
                 }
             }
-            while (char_stack.Count != 0)
-            {
-                output += char_stack.Pop();
+                PrefixEvaluated.Add(new KeyValuePair<int, string>(exp.Key, Stack.Peek().ToString()));
             }
-            return output;
-        }
-        public class InfixToPostfix
-        {
-            //public List<KeyValuePair<int, string>> Postfix = new List<KeyValuePair<int, string>>();
-            public static List<KeyValuePair<int, string>> ConvertPostfix(List<KeyValuePair<int, string>> Infix)
-            {
-                //Postfix
-                foreach (KeyValuePair<int, string> exp in Infix)
-                {
-                    char[] arr_infix = exp.Value.ToCharArray();
-                    Stack<char> char_stack = new Stack<char>();
-                    string output = "";
-                    for (int i = 0; i < arr_infix.Length; i++)
-                    {
-                        if (isalpha(arr_infix[i]) || isdigit(arr_infix[i]))
-                            output += arr_infix[i];
-                        else if (arr_infix[i] == '(')
-                            char_stack.Push(arr_infix[i]);
-                        else if (arr_infix[i] == ')')
-                        {
-                            while (char_stack.Peek() != '(')
-                            {
-                                output += char_stack.Peek();
-                                char_stack.Pop();
-                            }
-                            char_stack.Pop();
-                        }
-                        else
-                        {
-                            if (isOperator(arr_infix[i]))
-                            {
+            return PrefixEvaluated;
+        }//End of EvaluatePrefix
 
-                                while ((char_stack.Count != 0) && (getPriority(arr_infix[i]) <= getPriority(char_stack.Peek())))
-                                {
-                                    output += char_stack.Peek();
-                                    char_stack.Pop();
-                                }
-                                char_stack.Push(arr_infix[i]);
-                            }
-
-                        }
-                    }
-                    while (char_stack.Count != 0)
-                    {
-                        output += char_stack.Pop();
-                    }
-
-                    Postfix.Add(new KeyValuePair<int, string>(exp.Key, output));
-                }
-                return Postfix;
-            }//End of ConversePostfix
-        }// End of InfixToPosfix
-
-
-        public class InfixToPrefix
-        {
-
-            public static List<KeyValuePair<int, string>> ConvertPrefix(List<KeyValuePair<int, string>> Infix)
-            {
-                foreach (KeyValuePair<int, string> exp in Infix)
-                {
-                    char[] arr_infix = exp.Value.ToCharArray();
-                    string infix1 = reverse(arr_infix, 0, arr_infix.Length - 1);
-                    arr_infix = infix1.ToCharArray();
-
-                    // Replace ( with ) and vice versa
-                    for (int i = 0; i < arr_infix.Length; i++)
-                    {
-
-                        if (arr_infix[i] == '(')
-                        {
-                            arr_infix[i] = ')';
-                            i++;
-                        }
-                        else if (arr_infix[i] == ')')
-                        {
-                            arr_infix[i] = '(';
-                            i++;
-                        }
-                    }
-
-                    string prefix = infixToPostfix(arr_infix);
-                    prefix = reverse(prefix.ToCharArray(), 0, prefix.Length - 1);
-                    Prefix.Add(new KeyValuePair<int, string>(exp.Key, prefix));
-                }
-
-                return Prefix;
-            }//End of ConvertPrefix
-        }
-
-    }
-}
+    }//End of class
+}//End of namespace

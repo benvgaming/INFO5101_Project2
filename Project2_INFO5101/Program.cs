@@ -148,21 +148,10 @@ namespace Project2_INFO5101
             {
                 System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo("msedge.exe");
                 info.UseShellExecute = true;
-                //info.FileName = PATH_XML;
-
                 string path = Path.GetFullPath(PATH_XML);
-                //string encoded = Uri.EscapeDataString(path);
-                //string encoded = path.Replace(" ", "%20");
-                //var encoded = HttpUtility.UrlPathEncode(path);
-                //Console.WriteLine(encoded);
-                
-                
                 info.Arguments = "\""+path+"\"";
-
                 System.Diagnostics.Process.Start(info);
             }
         }
-
-        
     }
 }

@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿/* Authors: Manh Cuong Nguyen, Devon Tully, James Thornton, Sabrina Umeri
+ * Class: InfixToPrefix.cs
+ * Purposes: To convert Infix to Prefix
+ */
+
+
+using System.Collections.Generic;
 
 namespace Project2_INFO5101
 {
@@ -158,6 +164,5 @@ namespace Project2_INFO5101
 
             return Prefix;
         }//End of ConvertPrefix
-
-    }
-}
+    }//End of class
+}//end of namespace

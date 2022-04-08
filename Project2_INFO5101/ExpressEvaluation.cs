@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/* Authors: Manh Cuong Nguyen, Devon Tully, James Thornton, Sabrina Umeri
+ * Class: ExpressEvaluation.cs
+ * Purposes: To evaluate postfix and prefix
+ */
+
+using System.Collections.Generic;
 
 namespace Project2_INFO5101
 {
@@ -14,7 +19,7 @@ namespace Project2_INFO5101
                 return true;
             }
             return false;
-        }
+        }//isalpha
 
         static bool isdigit(char c)
         {
@@ -23,7 +28,7 @@ namespace Project2_INFO5101
                 return true;
             }
             return false;
-        }
+        }//isdigit
 
         public static List<KeyValuePair<int, string>> EvaluatePostfix(List<KeyValuePair<int, string>> postfix)
         {
@@ -118,6 +123,5 @@ namespace Project2_INFO5101
             }
             return PrefixEvaluated;
         }//End of EvaluatePrefix
-
     }//End of class
 }//End of namespace

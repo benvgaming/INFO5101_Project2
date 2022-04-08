@@ -1,7 +1,11 @@
-﻿using System;
+﻿/* Authors: Manh Cuong Nguyen, Devon Tully, James Thornton, Sabrina Umeri
+ * Class: Program.cs
+ * Purposes: The UI for the program
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web;
 namespace Project2_INFO5101
 {
     class Program
@@ -11,8 +15,6 @@ namespace Project2_INFO5101
         const string PATH_TXT = ".\\..\\..\\..\\..\\Data\\Project 2_INFO_5101.txt";
         static void Main(string[] args)
         {
-            //CSVFile reader = new CSVFile();
-            //ExpressEvaluation converter = new ExpressEvaluation();
             
             List<KeyValuePair<int, string>> Infix = new List<KeyValuePair<int, string>>();
             List<KeyValuePair<int, string>> Postfix = new List<KeyValuePair<int, string>>();
@@ -152,6 +154,6 @@ namespace Project2_INFO5101
                 info.Arguments = "\""+path+"\"";
                 System.Diagnostics.Process.Start(info);
             }
-        }
-    }
-}
+        }//End of main
+    }//End of class
+}//End of namespace

@@ -1,9 +1,10 @@
-﻿using System;
+﻿/* Authors: Manh Cuong Nguyen, Devon Tully, James Thornton, Sabrina Umeri
+ * Class: CSVFile.cs
+ * Purposes: To read CSVFile
+ */
+
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project2_INFO5101
 {

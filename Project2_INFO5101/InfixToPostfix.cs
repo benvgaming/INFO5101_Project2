@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/* Authors: Manh Cuong Nguyen, Devon Tully, James Thornton, Sabrina Umeri
+ * Class: InfixToPostfix.cs
+ * Purposes: To convert Infix to Postfix
+ */
+
+using System.Collections.Generic;
 
 namespace Project2_INFO5101
 {
@@ -12,7 +17,7 @@ namespace Project2_INFO5101
                 return true;
             }
             return false;
-        }
+        }//End of isalpha
 
         static bool isdigit(char c)
         {
@@ -21,12 +26,12 @@ namespace Project2_INFO5101
                 return true;
             }
             return false;
-        }
+        }//End of isdigit
 
         static bool isOperator(char c)
         {
             return (!isalpha(c) && !isdigit(c));
-        }
+        }//end of isOperator
 
         static int getPriority(char C)
         {
@@ -38,11 +43,10 @@ namespace Project2_INFO5101
                 return 3;
 
             return 0;
-        }
+        }//end of getPriority
 
         public static List<KeyValuePair<int, string>> ConvertPostfix(List<KeyValuePair<int, string>> Infix)
         {
-            //Postfix
             foreach (KeyValuePair<int, string> exp in Infix)
             {
                 char[] arr_infix = exp.Value.ToCharArray();
@@ -87,6 +91,5 @@ namespace Project2_INFO5101
             }
             return Postfix;
         }//End of ConversePostfix
-
-    }
-}
+    }//End of class
+}//End of namespace

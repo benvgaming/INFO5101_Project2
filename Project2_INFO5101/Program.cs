@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Web;
 namespace Project2_INFO5101
 {
     class Program
     {
         const string PATH_CSV = ".\\..\\..\\..\\..\\Data\\Project 2_INFO_5101.csv";
-        const string PATH_XML = ".\\..\\..\\..\\..\\Data\\Summary.xml";
+        const string PATH_XML = @".\..\..\..\..\Data\Summary.xml";
         const string PATH_TXT = ".\\..\\..\\..\\..\\Data\\Project 2_INFO_5101.txt";
         static void Main(string[] args)
         {
@@ -142,14 +143,23 @@ namespace Project2_INFO5101
 
 
             } while (!valid);
-
+            
             if(selection == 'Y')
             {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = PATH_XML,
-                    UseShellExecute = true,
-                }); 
+                System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo("msedge.exe");
+                info.UseShellExecute = true;
+                //info.FileName = PATH_XML;
+
+                string path = Path.GetFullPath(PATH_XML);
+                //string encoded = Uri.EscapeDataString(path);
+                //string encoded = path.Replace(" ", "%20");
+                //var encoded = HttpUtility.UrlPathEncode(path);
+                //Console.WriteLine(encoded);
+                
+                
+                info.Arguments = "\""+path+"\"";
+
+                System.Diagnostics.Process.Start(info);
             }
         }
 

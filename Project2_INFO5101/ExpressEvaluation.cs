@@ -37,10 +37,7 @@ namespace Project2_INFO5101
             foreach (KeyValuePair<int, string> exp in postfix)
             {
                 Stack<double> operand = new Stack<double>();
-                Func<int, int, string> add = (a, b) => (a + b).ToString();
-                Func<int, int, string> minus = (a, b) => (a - b).ToString();
-                Func<int, int, string> multiply = (a, b) => (a * b).ToString();
-                Func<int, int, string> divide = (a, b) => (a / b).ToString();
+                BinaryExpression binaryExpression;
                 char[] e = exp.Value.ToCharArray();
                 double result = 0;
                 for (int i = 0; i < e.Length; i++)
@@ -58,19 +55,49 @@ namespace Project2_INFO5101
                         operand.Pop();
                         if (e[i] == '/')
                         {
-                            result = op1 / op2;
+                            binaryExpression =
+                            Expression.MakeBinary(
+                                ExpressionType.Divide,
+                                Expression.Constant(op1),
+                                Expression.Constant(op2));
+
+                            Func<double> compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+
+                            result = compiled.Invoke();
                         }
                         else if (e[i] == '*')
                         {
-                            result = op1 * op2;
+                            binaryExpression =
+                            Expression.MakeBinary(
+                                ExpressionType.Multiply,
+                                Expression.Constant(op1),
+                                Expression.Constant(op2));
+
+                            Func<double> compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+
+                            result = compiled.Invoke();
                         }
                         else if (e[i] == '+')
                         {
-                            result = op1 + op2;
+                            binaryExpression =
+                            Expression.MakeBinary(
+                                ExpressionType.Add,
+                                Expression.Constant(op1),
+                                Expression.Constant(op2));
+
+                            Func<double> compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+                            result = compiled.Invoke();
                         }
                         else if (e[i] == '-')
                         {
-                            result = op1 - op2;
+
+                            binaryExpression =
+                            Expression.MakeBinary(
+                                ExpressionType.Subtract,
+                                Expression.Constant(op1),
+                                Expression.Constant(op2));
+                            Func<double> compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+                            result = compiled.Invoke();
                         }
                         operand.Push(result);
                     }
@@ -84,46 +111,59 @@ namespace Project2_INFO5101
             List<KeyValuePair<int, string>> PrefixEvaluated = new List<KeyValuePair<int, string>>();
             foreach (KeyValuePair<int, string> exp in prefix)
             {
-            Stack<double> Stack = new Stack<double>();
+                Stack<double> Stack = new Stack<double>();
+                BinaryExpression binaryExpression;
+                Func<double> compiled;
                 string exprsn = exp.Value;
-            for (int j = exprsn.Length - 1; j >= 0; j--)
-            {
-
-                // Push operand to Stack
-                // To convert exprsn[j] to digit subtract
-                // '0' from exprsn[j].
-                if (isalpha(exprsn[j]) || isdigit(exprsn[j]))
-                    Stack.Push((double)(exprsn[j] - 48));
-
-                else
+                for (int j = exprsn.Length - 1; j >= 0; j--)
                 {
 
-                    // Operator encountered
-                    // Pop two elements from Stack
-                    double o1 = Stack.Peek();
-                    Stack.Pop();
-                    double o2 = Stack.Peek();
-                    Stack.Pop();
+                    // Push operand to Stack
+                    // To convert exprsn[j] to digit subtract
+                    // '0' from exprsn[j].
+                    if (isalpha(exprsn[j]) || isdigit(exprsn[j]))
+                        Stack.Push((double)(exprsn[j] - 48));
 
-                    // Use switch case to operate on o1
-                    // and o2 and perform o1 O o2.
-                    switch (exprsn[j])
+                    else
                     {
-                        case '+':
-                            Stack.Push(o1 + o2);
-                            break;
-                        case '-':
-                            Stack.Push(o1 - o2);
-                            break;
-                        case '*':
-                            Stack.Push(o1 * o2);
-                            break;
-                        case '/':
-                            Stack.Push(o1 / o2);
-                            break;
+
+                        // Operator encountered
+                        // Pop two elements from Stack
+                        double o1 = Stack.Peek();
+                        var op1 = Expression.Constant(Stack.Peek());
+                        Stack.Pop();
+                        double o2 = Stack.Peek();
+                        var op2 = Expression.Constant(Stack.Peek());
+                        Stack.Pop();
+
+                        // Use switch case to operate on o1
+                        // and o2 and perform o1 O o2.
+                        switch (exprsn[j])
+                        {
+                            case '+':
+                                binaryExpression = Expression.Add(op1, op2);
+                                compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+                                Stack.Push(compiled.Invoke());
+                                break;
+                            case '-':
+                                binaryExpression = Expression.Subtract(op1, op2);
+                                compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+                                Stack.Push(compiled.Invoke());
+                                break;
+                            case '*':
+                                binaryExpression = Expression.Multiply(op1, op2);
+                                compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+                                Stack.Push(compiled.Invoke());
+                                break;
+                            case '/':
+
+                                binaryExpression = Expression.Divide(op1, op2);
+                                compiled = Expression.Lambda<Func<double>>(binaryExpression).Compile();
+                                Stack.Push(compiled.Invoke());
+                                break;
+                        }
                     }
                 }
-            }
                 PrefixEvaluated.Add(new KeyValuePair<int, string>(exp.Key, Stack.Peek().ToString()));
             }
             return PrefixEvaluated;

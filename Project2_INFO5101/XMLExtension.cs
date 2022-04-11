@@ -4,54 +4,44 @@
  */
 
 using System.Xml;
-
+using System.Linq;
 namespace Project2_INFO5101
 {
-    public class XMLExtension
+    public static class XMLExtension
     {
-        XmlWriter writer;
+        //static XmlWriter writer;
 
         const string PATH_XML = ".\\..\\..\\..\\..\\Data\\Summary.xml";
-        public XMLExtension()
-        {
 
-           XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
-           {
-               Indent = true,
-               IndentChars = "\t",
-               NewLineOnAttributes = true
-           };
-           writer = XmlWriter.Create(PATH_XML, xmlWriterSettings);
-        }//c'tor
 
-        public void WriteStartDocument()
+        public static void WriteStartDocument(this XmlWriter writer)
         {
             writer.WriteStartDocument();
         }//WriteStartDocument
 
-        public void WriteStartRootElement()
+        public static void WriteStartRootElement(this XmlWriter writer)
         {
             writer.WriteStartElement("root");
         }//WriteStartRootELement
 
-        public void WriteEndRootElement()
+        public static void WriteEndRootElement(this XmlWriter writer)
         {
             writer.WriteEndElement();
             writer.WriteEndDocument();
             writer.Close();
         }//WriteEndRootElement
 
-        public void WriteStartElement(string element)
+        public static void WriteStartElement(this XmlWriter writer,string element)
         {
             writer.WriteStartElement(element);
         }//WrtieStartElement
 
-        public void WriteEndElement()
+        public static void WriteEndElement(this XmlWriter writer)
         {
             writer.WriteEndElement();
         }//WriteEndElement
 
-        public void WriteAttribute(string attribute)
+        public static void WriteAttribute(this XmlWriter writer,string attribute)
         {
             writer.WriteString(attribute);
         }//WriteAttribute

@@ -3,8 +3,9 @@
  * Purposes: To evaluate postfix and prefix
  */
 
+using System;
 using System.Collections.Generic;
-
+using System.Linq.Expressions;
 namespace Project2_INFO5101
 {
     public static class ExpressEvaluation
@@ -36,6 +37,10 @@ namespace Project2_INFO5101
             foreach (KeyValuePair<int, string> exp in postfix)
             {
                 Stack<double> operand = new Stack<double>();
+                Func<int, int, string> add = (a, b) => (a + b).ToString();
+                Func<int, int, string> minus = (a, b) => (a - b).ToString();
+                Func<int, int, string> multiply = (a, b) => (a * b).ToString();
+                Func<int, int, string> divide = (a, b) => (a / b).ToString();
                 char[] e = exp.Value.ToCharArray();
                 double result = 0;
                 for (int i = 0; i < e.Length; i++)

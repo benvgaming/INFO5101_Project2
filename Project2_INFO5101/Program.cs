@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+
 namespace Project2_INFO5101
 {
     class Program
@@ -92,7 +94,14 @@ namespace Project2_INFO5101
             }
             Console.WriteLine("======================================================================================================================");
             //write xml
-            XMLExtension xml = new XMLExtension();
+            XmlWriter xml ;
+           XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
+           {
+               Indent = true,
+               IndentChars = "\t",
+               NewLineOnAttributes = true
+           };
+           xml = XmlWriter.Create(PATH_XML, xmlWriterSettings);
 
             xml.WriteStartDocument();
             xml.WriteStartRootElement();
